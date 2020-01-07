@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cimc.senheyun.dao.BsMenuDao">
+
+  <resultMap id="BaseResultMap" type="BsMenuPo">    
+    <id column="pk_menu" property="pkMenu" />
+    <result column="pk_company" property="pkCompany" />
+    <result column="name" property="name"  />
+    <result column="menuUrl" property="menuurl" />
+    <result column="f_pk_menu" property="fPkMenu" />
+    <collection property="children" ofType="BsMenuPo" column="pk_menu" select="findMenuByParentId"/>
+  </resultMap>
+  
+   <!-- <resultMap type="Menu" id="recursionMenuMap">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="children" ofType="Menu" column="id" select="findMenuByParentId"/>
+    </resultMap> -->
+ 
+    <select id="findAllRecursion" resultMap="BaseResultMap">
+        SELECT * FROM bs_menu WHERE f_pk_menu ='0'
+    </select>
+ 
+    <select id="findMenuByParentId" resultType="BsMenuPo">
+        SELECT * FROM bs_menu WHERE f_pk_menu = #{pk_menu}
+    </select>
+  
+  
+  
+</mapper>

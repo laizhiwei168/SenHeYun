@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cimc.senheyun.dao.TaWeatherDetectorDao">
+  
+  
+  <sql id="Base_Column_List">
+    a.equipmentNo ,b.*
+   </sql>
+  
+  
+   <sql id="Example_Where_Clause">
+    <where>
+         a.enablestate= 1  
+         <if test="pkEquipment !=null">
+           and  a.pk_equipment=#{pkEquipment,jdbcType=VARCHAR}
+        </if>
+        
+        <if test="equipmentType !=null">
+           and  a.equipmentType=#{equipmentType,jdbcType=VARCHAR}
+        </if>
+        
+        <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+            and  b.dataTime between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+ 		</if>
+        
+        <if test="sort!=null">
+            ORDER BY b.dataTime desc
+        </if>
+        
+    </where>
+  </sql>
+  
+  <select id="findByCount" resultType="int" parameterType="com.cimc.senheyun.vo.TaWeatherDetectorVo" >
+   select 
+   count(1)
+   from 
+   ta_equipment a 
+   LEFT JOIN ta_equipmet_data_new b on a.pk_equipment = b.pk_equipment  
+   <include refid="Example_Where_Clause" />	
+  </select>
+  
+  <select id="selectByExample" parameterType="com.cimc.senheyun.vo.TaWeatherDetectorVo" resultType="com.cimc.senheyun.bo.TaWeatherDetectorBo">
+    select
+    <include refid="Base_Column_List" />
+     
+  from ta_equipment a 
+   LEFT JOIN ta_equipmet_data_new b on a.pk_equipment = b.pk_equipment  
+    <include refid="Example_Where_Clause" />
+     <if test="firstIndex!=null">
+         LIMIT #{firstIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+     </if>
+  </select>
+  
+  
+  <!-- =======history=== -->
+  
+  <select id="findHistoryByCount" resultType="int" parameterType="com.cimc.senheyun.vo.TaWeatherDetectorVo" >
+   select 
+   count(1)
+   from 
+   ta_equipment a 
+   LEFT JOIN ta_equipmet_data b on a.pk_equipment = b.pk_equipment  
+   <include refid="Example_Where_Clause" />	
+  </select>
+  
+  <select id="selectHistoryByExample" parameterType="com.cimc.senheyun.vo.TaWeatherDetectorVo" resultType="com.cimc.senheyun.bo.TaWeatherDetectorBo">
+    select
+    <include refid="Base_Column_List" />
+  from ta_equipment a 
+   LEFT JOIN ta_equipmet_data b on a.pk_equipment = b.pk_equipment  
+    <include refid="Example_Where_Clause" />
+     <if test="firstIndex!=null">
+         LIMIT #{firstIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+     </if>
+  </select>
+  
+  <!-- =========统计========= findTjPerature -->
+  <!-- <select id="findTjTaWeatherDetector" parameterType="com.cimc.senheyun.vo.Tj_TaWeatherDetectorVo" resultType="com.cimc.senheyun.bo.Tj_TaWeatherDetectorBo" >
+ 	 select 
+ 	 DATE_FORMAT(a.dataTime,#{dataFormat,jdbcType=VARCHAR}) as dataTime,
+ 	 
+ 	 <if test="is_temperature==true">
+ 	 SUM(a.temperature) as temperature, 
+ 	 </if>
+ 	 <if test="is_humidity==true">
+ 	 SUM(a.humidity) as humidity,
+ 	 </if>
+ 	 <if test="is_illuminance==true">
+ 	 SUM(a.illuminance) as illuminance, 
+ 	 </if>
+ 	 <if test="is_soilTemperature==true">
+ 	 SUM(a.soilTemperature) as soilTemperature,
+ 	 </if>
+ 	 <if test="is_soliWater==true">
+ 	 SUM(a.soliWater) as soliWater, 
+ 	 </if>
+ 	 <if test="is_airPressure==true">
+ 	 SUM(a.airPressure) as airPressure,
+ 	 </if>
+ 	 <if test="is_CO2==true">
+ 	 SUM(a.CO2) as CO2, 
+ 	 </if>
+ 	 <if test="is_windSpeed==true">
+ 	 SUM(a.windSpeed) as windSpeed,
+ 	 </if>
+ 	 <if test="is_windDirection==true">
+ 	 SUM(a.windDirection) as windDirection, 
+ 	 </if>
+ 	 <if test="is_rainfall==true">
+ 	 SUM(a.rainfall) as rainfall,
+ 	 </if>
+ 	 count(*) as amount 
+ 	 from ta_equipmet_data as a LEFT JOIN ta_equipment as b on a.pk_equipment=b.pk_equipment
+ 	 where b.equipmentNo = #{equipmentNo,jdbcType=VARCHAR} 
+ 	 <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+          and  a.dataTime between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+ 	</if>
+ 	 group by date_format(a.dataTime, #{dataFormat,jdbcType=VARCHAR});
+  </select> -->
+  <select id="findTjTaWeatherDetector" parameterType="com.cimc.senheyun.vo.Tj_TaWeatherDetectorVo" resultType="com.cimc.senheyun.bo.Tj_TaWeatherDetectorBo" >
+ 	 select 
+ 	 a.dataTime 	 
+ 	 <if test="is_temperature==true">
+ 	 ,a.temperature
+ 	 </if>
+ 	 <if test="is_humidity==true">
+ 	 ,a.humidity
+ 	 </if>
+ 	 <if test="is_illuminance==true">
+ 	 ,a.illuminance
+ 	 </if>
+ 	 <if test="is_soilTemperature==true">
+ 	 ,a.soilTemperature
+ 	 </if>
+ 	 <if test="is_soliWater==true">
+ 	 ,a.soliWater
+ 	 </if>
+ 	 <if test="is_airPressure==true">
+ 	 ,a.airPressure
+ 	 </if>
+ 	 <if test="is_CO2==true">
+ 	 ,a.CO2
+ 	 </if>
+ 	 <if test="is_windSpeed==true">
+ 	 ,a.windSpeed
+ 	 </if>
+ 	 <if test="is_windDirection==true">
+ 	 ,a.windDirection
+ 	 </if>
+ 	 <if test="is_rainfall==true">
+ 	 ,a.rainfall
+ 	 </if>
+ 	 from ta_equipmet_data as a LEFT JOIN ta_equipment as b on a.pk_equipment=b.pk_equipment
+ 	 where b.equipmentNo = #{equipmentNo,jdbcType=VARCHAR} 
+ 	 <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+          and  a.dataTime between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+ 	</if>
+  </select>
+  
+</mapper>

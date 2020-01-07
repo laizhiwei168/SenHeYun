@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cimc.senheyun.dao.PxTrainclassDao">
+  <resultMap id="BaseResultMap" type="com.cimc.senheyun.po.PxTrainclassPo">
+    <result column="pk_trainclass" jdbcType="VARCHAR" property="pkTrainclass" />
+    <result column="pk_trainType" jdbcType="VARCHAR" property="pkTraintype" />
+    <result column="pk_group" jdbcType="VARCHAR" property="pkGroup" />
+    <result column="pk_org" jdbcType="VARCHAR" property="pkOrg" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="classDescribe" jdbcType="VARCHAR" property="classDescribe" />
+    <result column="period" jdbcType="VARCHAR" property="period" />
+    <result column="video" jdbcType="VARCHAR" property="video" />
+    <result column="information" jdbcType="VARCHAR" property="information" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="creatortime" jdbcType="TIMESTAMP" property="creatortime" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modifiedtime" jdbcType="TIMESTAMP" property="modifiedtime" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="enablestate" jdbcType="INTEGER" property="enablestate" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    a.pk_trainclass,  a.pk_trainType,  a.pk_group,  a.pk_org, a.name,  a.classDescribe,  a.period, a.video, a.information, 
+     a.creator,  a.creatortime,  a.modifier,  a.modifiedtime,  a.memo,  a.enablestate
+  </sql>
+  
+   <sql id="type_Column_List">
+    b.trainTypeName,b.trainTypeNM
+  </sql>
+  
+   <sql id="user_Column_List">
+   c.USER_NAME as cuserName
+  </sql>
+  <sql id="org_Column_List">
+    d.NAME as orgName
+  </sql>
+    
+  
+   <sql id="Example_Where_Clause">
+    <where>
+         a.enablestate= 1        
+        <if test="pkGroup !=null">
+           and  a.pk_group=#{pkGroup,jdbcType=VARCHAR}
+        </if>
+        
+        <if test="orgs !=null">
+           and   a.pk_org IN
+	        <foreach collection="orgs" index="index" item="item"
+	            open="(" separator="," close=")">
+	            #{item.pkOrg}
+	        </foreach> 
+        </if>
+        
+        <if test="pkTrainclass !=null and pkTrainclass !=''">
+           and  a.pk_trainclass=#{pkTrainclass,jdbcType=VARCHAR}
+        </if>
+        
+        <if test="pkTraintype != null and pkTraintype !=''">
+            and  a.pk_trainType=#{pkTraintype,jdbcType=VARCHAR}
+        </if>
+                
+        <if test="name != null and name !=''">
+            and  a.name like CONCAT('%','${name}','%') 
+        </if>
+        
+    </where>
+  </sql>
+  
+  <select id="findByCount" resultType="int" parameterType="com.cimc.senheyun.vo.PxTrainclassVo" >
+   select 
+   count(1)
+   from 
+   px_trainclass as a 
+   <include refid="Example_Where_Clause" />	
+  </select>
+  
+  <select id="selectByExample" parameterType="com.cimc.senheyun.vo.PxTrainclassVo" resultType="com.cimc.senheyun.bo.PxTrainclassBo">
+    select
+    <include refid="Base_Column_List" />,
+    <include refid="type_Column_List" />,
+    <include refid="user_Column_List" />,
+    <include refid="org_Column_List" />
+    FROM px_trainclass as a 
+    LEFT JOIN px_traintype as b ON a.pk_trainType=b.pk_trainType
+    LEFT JOIN sm_user c on a.creator=c.CUSERID 
+    LEFT JOIN org_orgs d on a.pk_org=d.PK_ORG 
+    <include refid="Example_Where_Clause" />
+     <if test="firstIndex!=null">
+         LIMIT #{firstIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+     </if>
+  </select>
+  
+  
+  <select id="selectByKey" parameterType="com.cimc.senheyun.vo.PxTrainclassVo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    FROM px_trainclass as a
+    <where>
+         a.enablestate= 1
+        <if test="pkTrainclass !=null">
+            and a.pk_trainclass=#{pkTrainclass,jdbcType=VARCHAR}
+        </if>
+    </where>
+  </select>
+    
+  <insert id="insertSelective" parameterType="com.cimc.senheyun.po.PxTrainclassPo">
+    insert into px_trainclass
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkTrainclass != null">
+        pk_trainclass,
+      </if>
+      <if test="pkTraintype != null">
+        pk_trainType,
+      </if>
+      <if test="pkGroup != null">
+        pk_group,
+      </if>
+      <if test="pkOrg != null">
+        pk_org,
+      </if>
+      
+      <if test="name != null">
+        name,
+      </if>
+      <if test="classDescribe != null">
+        classDescribe,
+      </if>
+      <if test="period != null">
+        period,
+      </if>
+      <if test="video != null">
+        video,
+      </if>
+      <if test="information != null">
+        information,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="creatortime != null">
+        creatortime,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="modifiedtime != null">
+        modifiedtime,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="enablestate != null">
+        enablestate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkTrainclass != null">
+        #{pkTrainclass,jdbcType=VARCHAR},
+      </if>
+      <if test="pkTraintype != null">
+        #{pkTraintype,jdbcType=VARCHAR},
+      </if>
+      <if test="pkGroup != null">
+        #{pkGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="pkOrg != null">
+        #{pkOrg,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="classDescribe != null">
+        #{classDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null">
+        #{period,jdbcType=VARCHAR},
+      </if>
+       <if test="video != null">
+        #{video,jdbcType=VARCHAR},
+      </if>
+      <if test="information != null">
+        #{information,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="creatortime != null">
+        #{creatortime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedtime != null">
+        #{modifiedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="enablestate != null">
+        #{enablestate,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByExampleSelective" parameterType="com.cimc.senheyun.po.PxTrainclassPo">
+    update px_trainclass
+    <set>      
+      <if test="pkTraintype != null">
+        pk_trainType = #{pkTraintype,jdbcType=VARCHAR},
+      </if>
+      <if test="pkGroup != null">
+        pk_group = #{pkGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="pkOrg != null">
+        pk_org = #{pkOrg,jdbcType=VARCHAR},
+      </if>      
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="classDescribe != null">
+        classDescribe = #{classDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null">
+        period = #{period,jdbcType=VARCHAR},
+      </if>
+      <if test="video != null">
+        video = #{video,jdbcType=VARCHAR},
+      </if>
+      <if test="information != null">
+        information = #{information,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="creatortime != null">
+        creatortime = #{creatortime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedtime != null">
+        modifiedtime = #{modifiedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="enablestate != null">
+        enablestate = #{enablestate,jdbcType=INTEGER},
+      </if>
+    </set>
+    <where>
+        pk_trainclass = #{pkTrainclass,jdbcType=VARCHAR}
+    </where>
+  </update>
+  
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="error">
+ <properties>
+  <property name="fileName">cnooc.log</property>
+  <property name="backupFilePatch">/logs/</property>
+  <property name="testFilePatch">/logs/log</property>
+ </properties>
+ <!-- 先定义所有的appender -->
+ <appenders>
+  <!-- 输出控制台的配置 -->
+  <Console name="Console" target="SYSTEM_OUT">
+   <!-- 控制台只输出level及以上级别的信息(onMatch), 其他的直接拒绝(onMismatch) -->
+   <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"></ThresholdFilter>
+   <!-- 输出日志的格式 -->
+   <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M -%msg%xEx%n"></PatternLayout>
+  </Console>
+        <Console name="consolePrint" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+  
+  <!-- 单体文件输出日志 ，该日志文件每次运行时会自动清空，由append属性决定，适合临时测试调试 -->
+  <File name="log" fileName="${testFilePatch}${fileName}" append="false">
+   <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M -%msg%xEx%n"></PatternLayout>
+  </File>
+  
+  <!-- 滚动日志，每个日志文件大小超过size,则自动存入对应文件夹下并压缩，作为存档 -->
+  <RollingFile name="RollingFile" fileName="${backupFilePatch}${fileName}" filePattern="${backupFilePatch}$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+   <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"></PatternLayout>
+   <SizeBasedTriggeringPolicy size="10MB"></SizeBasedTriggeringPolicy>
+   <DefaultRolloverStrategy max="20"></DefaultRolloverStrategy>
+  </RollingFile>
+ </appenders>
+ 
+ <!-- 配置logger -->
+ <loggers>
+  <!-- 将业务dao接口填写进去,并用控制台输出即可 -->
+        <logger name="com.cimcitech.wzbs.dao" level="DEBUG" additivity="false">
+            <appender-ref ref="consolePrint"/>
+            <appender-ref ref="log"></appender-ref>
+   <appender-ref ref="RollingFile"></appender-ref>
+        </logger>
+ 
+  <!-- 建立默认root的logger -->
+  <root level="info">
+   <appender-ref ref="consolePrint" />
+   <appender-ref ref="log"></appender-ref>
+   <appender-ref ref="Console"></appender-ref>
+   <appender-ref ref="RollingFile"></appender-ref>
+  </root>
+ </loggers>
+ 
+</configuration>

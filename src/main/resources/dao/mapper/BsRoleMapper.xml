@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cimc.senheyun.dao.BsRoleDao">
+  <resultMap id="BaseResultMap" type="com.cimc.senheyun.po.BsRolePo">
+    <constructor>
+      <arg column="pk_role" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="pk_company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="roleType" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sort" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="creator" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="creatortime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="modifier" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="modifiedtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="enablestate" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+   a.*
+   </sql>
+  
+  <sql id="Example_Where_Clause">
+    <where>
+         a.enablestate= 1
+    </where>
+  </sql>
+  
+  <select id="findByCount" resultType="int" parameterType="com.cimc.senheyun.vo.BsRoleVo" >
+   select 
+   count(1)
+   from 
+   bs_role as a 
+   <include refid="Example_Where_Clause" />	
+  </select>
+  
+  <select id="selectByExample" parameterType="com.cimc.senheyun.vo.BsRoleVo" resultType="com.cimc.senheyun.po.BsRolePo">
+    select
+    <include refid="Base_Column_List" />
+    FROM bs_role as a 
+    <include refid="Example_Where_Clause" />
+     <if test="firstIndex!=null">
+         LIMIT #{firstIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+     </if>
+  </select>
+  
+  <insert id="insert" parameterType="com.cimc.senheyun.po.BsRolePo">
+    insert into bs_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkRole != null">
+        pk_role,
+      </if>
+      <if test="pkCompany != null">
+        pk_company,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="roletype != null">
+        roleType,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="creatortime != null">
+        creatortime,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="modifiedtime != null">
+        modifiedtime,
+      </if>
+      <if test="enablestate != null">
+        enablestate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkRole != null">
+        #{pkRole,jdbcType=VARCHAR},
+      </if>
+      <if test="pkCompany != null">
+        #{pkCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="roletype != null">
+        #{roletype,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="creatortime != null">
+        #{creatortime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedtime != null">
+        #{modifiedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enablestate != null">
+        #{enablestate,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.cimc.senheyun.po.BsRolePo">
+    update bs_role
+    <set>      
+      <if test="pkCompany != null">
+        pk_company = #{pkCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="roletype != null">
+        roleType = #{roletype,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="creatortime != null">
+        creatortime = #{creatortime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedtime != null">
+        modifiedtime = #{modifiedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enablestate != null">
+        enablestate = #{enablestate,jdbcType=INTEGER},
+      </if>
+    </set>
+     <where>        
+       pk_role = #{pkRole,jdbcType=VARCHAR}
+     </where>
+  </update>
+  
+
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cimc.senheyun.dao.TaEquipmentDao">
+  
+  
+  <sql id="Base_Column_List">
+    <!-- a.pk_trainclass,  a.pk_trainType,  a.pk_group,  a.pk_org, a.name,  a.classDescribe,  a.period, a.video, a.information, 
+     a.creator,  a.creatortime,  a.modifier,  a.modifiedtime,  a.memo,  a.enablestate
+   -->
+   </sql>
+  
+  
+  
+   <sql id="Example_Where_Clause">
+    <where>
+         a.enablestate= 1        
+        <if test="equipmentType !=null">
+           and  a.equipmentType=#{equipmentType,jdbcType=VARCHAR}
+        </if>
+    </where>
+  </sql>
+  
+  <select id="findByCount" resultType="int" parameterType="com.cimc.senheyun.vo.TaEquipmentVo" >
+   select 
+   count(1)
+   from 
+   ta_equipment as a 
+   <include refid="Example_Where_Clause" />	
+  </select>
+  
+  <select id="selectByExample" parameterType="com.cimc.senheyun.vo.TaEquipmentVo" resultType="com.cimc.senheyun.po.TaEquipmentPo">
+    select
+    <!-- <include refid="Base_Column_List" /> -->
+    *
+    FROM ta_equipment as a 
+    <include refid="Example_Where_Clause" />
+     <if test="firstIndex!=null">
+         LIMIT #{firstIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+     </if>
+  </select>
+  
+</mapper>

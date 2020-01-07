@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cimc.senheyun.dao.TaPushFatDao">
+  
+  
+  <sql id="Base_Column_List">
+    a.equipmentNo ,b.*
+   </sql>
+  
+  
+   <sql id="Example_Where_Clause">
+    <where>
+         a.enablestate= 1  
+         <if test="pkEquipment !=null">
+           and  a.pk_equipment=#{pkEquipment,jdbcType=VARCHAR}
+        </if>
+        
+        <if test="equipmentType !=null">
+           and  a.equipmentType=#{equipmentType,jdbcType=VARCHAR}
+        </if>
+        
+        <if test="equipmentNo !=null">
+           and  a.equipmentNo=#{equipmentNo,jdbcType=VARCHAR}
+        </if>
+        
+        <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+            and  b.dataTime between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+ 		</if>
+        
+        <if test="sort!=null">
+            ORDER BY b.dataTime desc
+        </if>
+        
+    </where>
+  </sql>
+  
+  <select id="findByCount" resultType="int" parameterType="com.cimc.senheyun.vo.TaPushFatVo" >
+   select 
+   count(1)
+   from 
+   ta_equipment a 
+   LEFT JOIN ta_tf_equipmet_data_new b on a.pk_equipment = b.pk_equipment  
+   <include refid="Example_Where_Clause" />	
+  </select>
+  
+  <select id="selectByExample" parameterType="com.cimc.senheyun.vo.TaPushFatVo" resultType="com.cimc.senheyun.bo.TaPushFatBo">
+    select
+    <include refid="Base_Column_List" />
+     
+  from ta_equipment a 
+   LEFT JOIN ta_tf_equipmet_data_new b on a.pk_equipment = b.pk_equipment  
+    <include refid="Example_Where_Clause" />
+     <if test="firstIndex!=null">
+         LIMIT #{firstIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+     </if>
+  </select>
+  
+  
+  <!-- =======history=== -->
+  
+  <select id="findHistoryByCount" resultType="int" parameterType="com.cimc.senheyun.vo.TaPushFatVo" >
+   select 
+   count(1)
+   from 
+   ta_equipment a 
+   LEFT JOIN ta_tf_equipmet_data b on a.pk_equipment = b.pk_equipment  
+   <include refid="Example_Where_Clause" />	
+  </select>
+  
+  <select id="selectHistoryByExample" parameterType="com.cimc.senheyun.vo.TaPushFatVo" resultType="com.cimc.senheyun.bo.TaPushFatBo">
+    select
+    <include refid="Base_Column_List" />
+  from ta_equipment a 
+   LEFT JOIN ta_tf_equipmet_data b on a.pk_equipment = b.pk_equipment  
+    <include refid="Example_Where_Clause" />
+     <if test="firstIndex!=null">
+         LIMIT #{firstIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+     </if>
+  </select>
+  
+  <!-- =========统计========= Tj_TaPushFatBo -->
+  <select id="findTjTaPushFat" parameterType="com.cimc.senheyun.vo.Tj_TaPushFatVo" resultType="com.cimc.senheyun.bo.Tj_TaPushFatBo" >
+ 	 select 
+ 	 DATE_FORMAT(dataTime,#{dataFormat,jdbcType=VARCHAR}) as dataTime,
+ 	 <if test="is_KPFatWeight==true">
+ 	 SUM(KPFatWeight) as KPFatWeight, 
+ 	 </if>
+ 	 <if test="is_KPSecondFatWeight==true">
+ 	 SUM(KPSecondFatWeight) as KPSecondFatWeight, 
+ 	 </if>
+ 	 <if test="is_XSAFatWeight==true">
+ 	 SUM(XSAFatWeight) as XSAFatWeight, 
+ 	 </if>
+ 	 count(*) as amount 
+ 	 from ta_tf_equipmet_data 
+ 	 where pk_equipment = #{pkEquipment,jdbcType=VARCHAR} 
+ 	 <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+          and  dataTime between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+ 	</if>
+ 	 group by date_format(dataTime, #{dataFormat,jdbcType=VARCHAR});
+   <!-- <include refid="Example_Where_Clause" />	 -->
+  </select>
+
+ 
+</mapper>

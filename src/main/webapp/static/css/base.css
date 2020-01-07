@@ -1,0 +1,104 @@
+/* CSS Reset 
+/*-----------------------------------------------------------------------------------*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline;  } body { line-height: 1; } ol, ul { list-style: none; } blockquote, q { quotes: none; } blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; } :focus { outline: 0; } ins { text-decoration: none; } del { text-decoration: line-through; } table { border-collapse: collapse; border-spacing: 0; }img{ display:block;}
+
+@font-face {font-family: 'iconfont';
+    src: url('../font/iconfont.eot'); /* IE9*/
+    src: url('../font/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../font/iconfont.woff') format('woff'), /* chrome、firefox */
+    url('../font/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('../font/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+@font-face {font-family: 'iconfont2';
+    
+}
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:28px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+	color:#fff;
+	font-weight:bold;
+	position:absolute;
+	top:0;
+	left:3%;
+	z-index:2;
+	}
+
+.lf{ float:left;}
+.rf{ float:right;}
+.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; } .clearfix { display: inline-block; } /* Hide from IE Mac \*/ .clearfix { display: block; } /* End hide from IE Mac */ 
+.none { display: none; } /* End Clearfix */
+
+/* General Setup
+/*-----------------------------------------------------------------------------------*/
+html{ height:100%;}
+body{font-family:"微软雅黑",Arial, Helvetica, sans-serif;padding:0;font-size:14px;margin:0 auto;height: 100%;position: relative;line-height:19px; color:#5a5a5a; background:#f5f5f5;}
+input{ font-size:14px; color:#5a5a5a;}
+a{ color:#848484; text-decoration:none;}
+a:hover{}
+
+
+
+/* font
+/*------------------------------------------*/
+h1, h2, h3, h4, h5, h6{font-weight:normal; margin:0px;padding:0;letter-spacing:-1px;}
+.f12{ font-size:12px;}
+.f16{ font-size:16px;}
+.f18{ font-size:18px;}
+.f24{ font-size:24px;}
+.f26{ font-size:26px;}
+.f28{ font-size:28px;}
+.f32{ font-size:32px;}
+.word_spac3{  letter-spacing:3px;}
+.arial{ font-family:Arial;}
+.lh28{ line-height:1.8em;}
+
+.b{ font-weight:bold;}
+
+.mt3{ margin-top:3px;}
+.mt5{ margin-top:5px;}
+.mt10{ margin-top:10px;}
+.mt15{ margin-top:15px;}
+.mt20{ margin-top:20px;}
+.mt30{ margin-top:30px;}
+.ml2{ margin-left:2%;}
+.ml8{ margin-left:10%;}
+
+
+
+
+
+
+/*----------page buttons---------------*/
+a.button_01{ width:120px; line-height:40px; display:block; text-decoration:none; text-align:center;  background:#2ab100 url(../images/ico_03.png) no-repeat left center; padding-left:20px;}
+a.button_02{ width:120px; line-height:40px; display:block; text-decoration:none; text-align:center; background:#ffa02f url(../images/ico_04.png) no-repeat left center; padding-left:20px;}
+a.button_03{ width:100%; line-height:40px; background:#ff5050; display:block; text-decoration:none; text-align:center;}
+a.button_04{ width:90px; line-height:2.2em; background:#49aaf6; display:block; text-decoration:none; text-align:center;  margin:0.2em 0 0 10%;}
+a.button_05{ width:100px; line-height:35px; background:#cccccc; display:block; text-decoration:none; text-align:center;border-radius:5px;}
+a.button_06{ width:100px; line-height:35px; background:#49aaf6; display:block; text-decoration:none; text-align:center; border-radius:5px;}
+
+/*font color*/
+.white, .white a{ color:white;}
+.red, .red a{ color:#f94844;}
+.blue, .blue a,#blue{ color:#07b6f0;}
+.blue2, .blue2 a{ color:#3aaeff;}
+.gary, .gary a{ color:#acacac;}
+.gary_light{ color:#bbbbbb;}
+
+.bg_gary{ background-color:#eef1f6;}
+.bg_white{ background-color:#fff;}
+.bg_blue{ background-color:#47afff;}
+.bg_black{ background-color:#3a3a3a;}
+.bg_red{ background-color:#f76764;}
+.bg_light_blue{ background-color:#def9ff;}
+.bg_pink{ background-color:#ffebe8;}
+.black{ color:black;}
+.bg{ background:#fffdf2;}
+
+
+.h50{ height:50px;}
+.h60{ height:70px;}
+.w96{width:96%; padding:4% 2% 0;}

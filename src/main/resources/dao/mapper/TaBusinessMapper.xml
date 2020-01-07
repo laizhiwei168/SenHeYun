@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cimc.senheyun.dao.TaBusinessDao">
+  <resultMap id="BaseResultMap" type="com.cimc.senheyun.po.TaBusinessPo">
+    <constructor>
+      <arg column="pk_equipment" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="dataTime" javaType="java.lang.String" jdbcType="TIMESTAMP" />
+      <arg column="batteryCapacity" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="signalValue" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="dataNumber" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="IMEI" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ICCID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="soilTemperature1" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="soilTemperature2" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="soilTemperature3" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="soilMoisture1" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="soilMoisture2" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="soilMoisture3" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+    </constructor>
+  </resultMap>
+  
+  <!-- =========统计========= findTjPerature -->
+  <!-- <select id="findTjTaBusiness" parameterType="com.cimc.senheyun.vo.Tj_TaBusinessVo" resultType="com.cimc.senheyun.bo.Tj_TaBusinessBo" >
+ 	 select 
+ 	 DATE_FORMAT(a.dataTime,#{dataFormat,jdbcType=VARCHAR}) as dataTime,
+ 	 <if test="is_soiltemperature1==true">
+ 	 SUM(a.soiltemperature1) as soiltemperature1, 
+ 	 </if>
+ 	  <if test="is_soiltemperature2==true">
+ 	 SUM(a.soiltemperature2) as soiltemperature2, 
+ 	 </if>
+ 	 <if test="is_soiltemperature3==true">
+ 	 SUM(a.soiltemperature3) as soiltemperature3, 
+ 	 </if>
+ 	 <if test="is_soilmoisture1==true">
+ 	 SUM(a.soilmoisture1) as soilmoisture1, 
+ 	 </if>
+ 	 <if test="is_soilmoisture2==true">
+ 	 SUM(a.soilmoisture2) as soilmoisture2, 
+ 	 </if>
+ 	 <if test="is_soilmoisture3==true">
+ 	 SUM(a.soilmoisture3) as soilmoisture3, 
+ 	 </if>
+ 	 count(*) as amount 
+ 	 from ta_business_equipmet_data as a LEFT JOIN ta_equipment as b on a.pk_equipment=b.pk_equipment
+ 	 where b.equipmentNo = #{equipmentNo,jdbcType=VARCHAR} 
+ 	 <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+          and  a.dataTime between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+ 	</if>
+ 	 group by date_format(a.dataTime, #{dataFormat,jdbcType=VARCHAR});
+  </select> -->
+  
+  <select id="findTjTaBusiness" parameterType="com.cimc.senheyun.vo.Tj_TaBusinessVo" resultType="com.cimc.senheyun.bo.Tj_TaBusinessBo" >
+ 	 select a.dataTime
+ 	 <if test="is_soiltemperature1==true">
+ 	 ,a.soiltemperature1
+ 	 </if>
+ 	  <if test="is_soiltemperature2==true">
+ 	 ,a.soiltemperature2
+ 	 </if>
+ 	 <if test="is_soiltemperature3==true">
+ 	 ,a.soiltemperature3
+ 	 </if>
+ 	 <if test="is_soilmoisture1==true">
+ 	 ,a.soilmoisture1
+ 	 </if>
+ 	 <if test="is_soilmoisture2==true">
+ 	 ,a.soilmoisture2
+ 	 </if>
+ 	 <if test="is_soilmoisture3==true">
+ 	 ,a.soilmoisture3
+ 	 </if>
+ 	 from ta_business_equipmet_data as a LEFT JOIN ta_equipment as b 
+ 	 on a.pk_equipment=b.pk_equipment
+ 	 where b.equipmentNo = #{equipmentNo,jdbcType=VARCHAR} 
+ 	 <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+          and  a.dataTime between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+ 	</if> 	
+  </select>
+  
+  <insert id="insert" parameterType="com.cimc.senheyun.po.TaBusinessPo">
+    insert into ta_business_equipmet_data_new
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkEquipment != null">
+        pk_equipment,
+      </if>
+      <if test="datatime != null">
+        dataTime,
+      </if>
+      <if test="batterycapacity != null">
+        batteryCapacity,
+      </if>
+      <if test="signalValueValue != null">
+        signalValueValue,
+      </if>
+      <if test="datanumber != null">
+        dataNumber,
+      </if>
+      <if test="imei != null">
+        IMEI,
+      </if>
+      <if test="iccid != null">
+        ICCID,
+      </if>
+      <if test="soiltemperature1 != null">
+        soilTemperature1,
+      </if>
+      <if test="soiltemperature2 != null">
+        soilTemperature2,
+      </if>
+      <if test="soiltemperature3 != null">
+        soilTemperature3,
+      </if>
+      <if test="soilmoisture1 != null">
+        soilMoisture1,
+      </if>
+      <if test="soilmoisture2 != null">
+        soilMoisture2,
+      </if>
+      <if test="soilmoisture3 != null">
+        soilMoisture3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkEquipment != null">
+        #{pkEquipment,jdbcType=VARCHAR},
+      </if>
+      <if test="datatime != null">
+        #{datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="batterycapacity != null">
+        #{batterycapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="signalValue != null">
+        #{signalValue,jdbcType=DECIMAL},
+      </if>
+      <if test="datanumber != null">
+        #{datanumber,jdbcType=VARCHAR},
+      </if>
+      <if test="imei != null">
+        #{imei,jdbcType=VARCHAR},
+      </if>
+      <if test="iccid != null">
+        #{iccid,jdbcType=VARCHAR},
+      </if>
+      <if test="soiltemperature1 != null">
+        #{soiltemperature1,jdbcType=DECIMAL},
+      </if>
+      <if test="soiltemperature2 != null">
+        #{soiltemperature2,jdbcType=DECIMAL},
+      </if>
+      <if test="soiltemperature3 != null">
+        #{soiltemperature3,jdbcType=DECIMAL},
+      </if>
+      <if test="soilmoisture1 != null">
+        #{soilmoisture1,jdbcType=DECIMAL},
+      </if>
+      <if test="soilmoisture2 != null">
+        #{soilmoisture2,jdbcType=DECIMAL},
+      </if>
+      <if test="soilmoisture3 != null">
+        #{soilmoisture3,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="insertHistory" parameterType="com.cimc.senheyun.po.TaBusinessPo">
+    insert into ta_business_equipmet_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkEquipment != null">
+        pk_equipment,
+      </if>
+      <if test="datatime != null">
+        dataTime,
+      </if>
+      <if test="batterycapacity != null">
+        batteryCapacity,
+      </if>
+      <if test="signalValue != null">
+        signalValue,
+      </if>
+      <if test="datanumber != null">
+        dataNumber,
+      </if>
+      <if test="imei != null">
+        IMEI,
+      </if>
+      <if test="iccid != null">
+        ICCID,
+      </if>
+      <if test="soiltemperature1 != null">
+        soilTemperature1,
+      </if>
+      <if test="soiltemperature2 != null">
+        soilTemperature2,
+      </if>
+      <if test="soiltemperature3 != null">
+        soilTemperature3,
+      </if>
+      <if test="soilmoisture1 != null">
+        soilMoisture1,
+      </if>
+      <if test="soilmoisture2 != null">
+        soilMoisture2,
+      </if>
+      <if test="soilmoisture3 != null">
+        soilMoisture3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkEquipment != null">
+        #{pkEquipment,jdbcType=VARCHAR},
+      </if>
+      <if test="datatime != null">
+        #{datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="batterycapacity != null">
+        #{batterycapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="signalValue != null">
+        #{signalValue,jdbcType=DECIMAL},
+      </if>
+      <if test="datanumber != null">
+        #{datanumber,jdbcType=VARCHAR},
+      </if>
+      <if test="imei != null">
+        #{imei,jdbcType=VARCHAR},
+      </if>
+      <if test="iccid != null">
+        #{iccid,jdbcType=VARCHAR},
+      </if>
+      <if test="soiltemperature1 != null">
+        #{soiltemperature1,jdbcType=DECIMAL},
+      </if>
+      <if test="soiltemperature2 != null">
+        #{soiltemperature2,jdbcType=DECIMAL},
+      </if>
+      <if test="soiltemperature3 != null">
+        #{soiltemperature3,jdbcType=DECIMAL},
+      </if>
+      <if test="soilmoisture1 != null">
+        #{soilmoisture1,jdbcType=DECIMAL},
+      </if>
+      <if test="soilmoisture2 != null">
+        #{soilmoisture2,jdbcType=DECIMAL},
+      </if>
+      <if test="soilmoisture3 != null">
+        #{soilmoisture3,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.cimc.senheyun.po.TaBusinessPo">
+    update ta_business_equipmet_data_new
+    <set>      
+      <if test="datatime != null">
+        dataTime = #{datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="batterycapacity != null">
+        batteryCapacity = #{batterycapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="signalValue != null">
+        signalValue = #{signalValue,jdbcType=DECIMAL},
+      </if>
+      <if test="datanumber != null">
+        dataNumber = #{datanumber,jdbcType=VARCHAR},
+      </if>
+      <if test="imei != null">
+        IMEI = #{imei,jdbcType=VARCHAR},
+      </if>
+      <if test="iccid != null">
+        ICCID = #{iccid,jdbcType=VARCHAR},
+      </if>
+      <if test="soiltemperature1 != null">
+        soilTemperature1 = #{soiltemperature1,jdbcType=DECIMAL},
+      </if>
+      <if test="soiltemperature2 != null">
+        soilTemperature2 = #{soiltemperature2,jdbcType=DECIMAL},
+      </if>
+      <if test="soiltemperature3 != null">
+        soilTemperature3 = #{soiltemperature3,jdbcType=DECIMAL},
+      </if>
+      <if test="soilmoisture1 != null">
+        soilMoisture1 = #{soilmoisture1,jdbcType=DECIMAL},
+      </if>
+      <if test="soilmoisture2 != null">
+        soilMoisture2 = #{soilmoisture2,jdbcType=DECIMAL},
+      </if>
+      <if test="soilmoisture3 != null">
+        soilMoisture3 = #{soilmoisture3,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <where>
+        pk_equipment = #{pkEquipment,jdbcType=VARCHAR}
+    </where>
+  </update>
+  
+</mapper>

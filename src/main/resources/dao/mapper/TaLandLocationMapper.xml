@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cimc.senheyun.dao.TaLandLocationDao">
+  <resultMap id="BaseResultMap" type="com.cimc.senheyun.po.TaLandLocationPo">
+    <constructor>
+      <arg column="pk_land" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="longitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="latitude" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="enablestate" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+   a.*
+   </sql>
+  
+  <sql id="Example_Where_Clause">
+    <where>
+         a.enablestate= 1
+         <if test="pkLand !=null">
+           and  a.pk_land=#{pkLand,jdbcType=VARCHAR}
+        </if> 
+        <if test="sort!=null">
+            ORDER BY a.number
+        </if>      
+    </where>
+  </sql>
+  
+  <select id="findByCount" resultType="int" parameterType="com.cimc.senheyun.vo.TaLandLocationVo" >
+   select 
+   count(1)
+   from 
+   ta_land_location as a 
+   <include refid="Example_Where_Clause" />	
+  </select>
+  
+  <select id="selectByExample" parameterType="com.cimc.senheyun.vo.TaLandLocationVo" resultType="com.cimc.senheyun.po.TaLandLocationPo">
+    select
+    <include refid="Base_Column_List" />
+    FROM ta_land_location as a 
+    <include refid="Example_Where_Clause" />
+     <if test="firstIndex!=null">
+         LIMIT #{firstIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+     </if>
+  </select>
+  
+  <insert id="insert" parameterType="com.cimc.senheyun.po.TaLandLocationPo">
+    insert into ta_land_location
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkLand != null">
+        pk_land,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="enablestate != null">
+        enablestate,
+      </if>      
+      <if test="number != null">
+        number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkLand != null">
+        #{pkLand,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="enablestate != null">
+        #{enablestate,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.cimc.senheyun.po.TaLandLocationPo">
+    update ta_land_location
+    <set>      
+      <if test="enablestate != null">
+        enablestate = #{enablestate,jdbcType=INTEGER},
+      </if>
+    </set>
+    <where>    
+        pk_land = #{pkLand,jdbcType=VARCHAR}     
+    </where>
+  </update>
+ 
+</mapper>

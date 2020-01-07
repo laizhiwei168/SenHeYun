@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cimc.senheyun.dao.TaPeratureDao">
+  <resultMap id="BaseResultMap" type="com.cimc.senheyun.po.TaPeraturePo">
+    
+    <constructor>
+      <arg column="pk_equipment" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="dataTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="liquidLevelMPa" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="batteryCapacity" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="signalValue" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+    </constructor>
+  </resultMap>
+  
+  <!-- =========统计========= findTjPerature -->
+  <!-- <select id="findTjPerature" parameterType="com.cimc.senheyun.vo.Tj_TaPeratureVo" resultType="com.cimc.senheyun.bo.Tj_TaPeratureBo" >
+ 	 select 
+ 	 DATE_FORMAT(a.dataTime,#{dataFormat,jdbcType=VARCHAR}) as dataTime, 
+ 	 SUM(a.liquidLevelMPa) as liquidLevelMPa, 
+ 	 count(*) as amount 
+ 	 from ta_perature_equipmet_data as a LEFT JOIN ta_equipment as b on a.pk_equipment=b.pk_equipment
+ 	 where b.equipmentNo = #{equipmentNo,jdbcType=VARCHAR} 
+ 	 <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+          and  a.dataTime between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+ 	</if>
+ 	 group by date_format(a.dataTime, #{dataFormat,jdbcType=VARCHAR});
+  </select> -->
+  <select id="findTjPerature" parameterType="com.cimc.senheyun.vo.Tj_TaPeratureVo" resultType="com.cimc.senheyun.bo.Tj_TaPeratureBo" >
+ 	 select 
+ 	 a.dataTime, 
+ 	 a.liquidLevelMPa 
+ 	 from ta_perature_equipmet_data as a LEFT JOIN ta_equipment as b on a.pk_equipment=b.pk_equipment
+ 	 where b.equipmentNo = #{equipmentNo,jdbcType=VARCHAR} 
+ 	 <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+          and  a.dataTime between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+ 	</if>
+  </select>
+  
+  <insert id="insert" parameterType="com.cimc.senheyun.po.TaPeraturePo">
+    insert into ta_perature_equipmet_data_new
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkEquipment != null">
+        pk_equipment,
+      </if>
+      <if test="datatime != null">
+        dataTime,
+      </if>
+      <if test="liquidlevelmpa != null">
+        liquidLevelMPa,
+      </if>
+      <if test="batterycapacity != null">
+        batteryCapacity,
+      </if>
+      <if test="signalValue != null">
+        signalValue,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkEquipment != null">
+        #{pkEquipment,jdbcType=VARCHAR},
+      </if>
+      <if test="datatime != null">
+        #{datatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="liquidlevelmpa != null">
+        #{liquidlevelmpa,jdbcType=DECIMAL},
+      </if>
+      <if test="batterycapacity != null">
+        #{batterycapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="signalValue != null">
+        #{signalValue,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="insertHistory" parameterType="com.cimc.senheyun.po.TaPeraturePo">
+    insert into ta_perature_equipmet_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkEquipment != null">
+        pk_equipment,
+      </if>
+      <if test="datatime != null">
+        dataTime,
+      </if>
+      <if test="liquidlevelmpa != null">
+        liquidLevelMPa,
+      </if>
+      <if test="batterycapacity != null">
+        batteryCapacity,
+      </if>
+      <if test="signalValue != null">
+        signalValue,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkEquipment != null">
+        #{pkEquipment,jdbcType=VARCHAR},
+      </if>
+      <if test="datatime != null">
+        #{datatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="liquidlevelmpa != null">
+        #{liquidlevelmpa,jdbcType=DECIMAL},
+      </if>
+      <if test="batterycapacity != null">
+        #{batterycapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="signalValue != null">
+        #{signalValue,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  
+</mapper>
